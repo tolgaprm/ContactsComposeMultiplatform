@@ -1,0 +1,21 @@
+package com.plcoding.contactscomposemultiplatform.di
+
+import android.content.Context
+import com.plcoding.contactscomposemultiplatform.core.data.DatabaseDriverFactory
+import com.plcoding.contactscomposemultiplatform.core.data.ImageStorage
+import com.plcoding.contactscomposemultiplatform.database.ContactDatabase
+import com.plcoding.contactscomposemultiplatform.ui.contacts.data.SqlDelightContactDataSource
+import com.plcoding.contactscomposemultiplatform.ui.contacts.domain.ContactDataSource
+
+actual class AppModule(
+    private val context: Context
+) {
+    actual val contactDataSource: ContactDataSource by lazy {
+        SqlDelightContactDataSource(
+            db = ContactDatabase(
+                driver = DatabaseDriverFactory(context).create(),
+            ),
+            imageStorage = ImageStorage(context)
+        )
+    }
+}
